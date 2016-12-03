@@ -1,0 +1,82 @@
+plugins {
+  id "net.ltgt.apt" version "0.9"
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+group = 'net.spookygames.gdx'
+version = '0.0.1'
+
+ext.gdxVersion = '1.8.0'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+dependencies {
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    
+    // Annotations
+    compileOnly 'org.adrianwalker:multiline-string:0.1.1'
+    apt 'org.adrianwalker:multiline-string:0.1.1'
+
+    testCompile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+}
+
+// Demo
+task demoJar(type: Jar) {
+	baseName = "${project.name}-demo"
+	
+    from files(sourceSets.main.output.classesDir)
+	from sourceSets.test.output
+    from {configurations.compile.collect {zipTree(it)}}
+    from {configurations.testCompile.collect {zipTree(it)}}
+	
+    manifest {
+        attributes 'Main-Class': "net.spookygames.gdx.gfx.demo.GdxGfxDemo"
+    }
+}
+
+// Javadoc
+task javadocJar (type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+// Sources
+task sourcesJar (type : Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+
+            artifact sourcesJar
+			artifact javadocJar
+        }
+    }
+}
+
+apply from: 'license.gradle'
+license.includes(["**/*.java"])
+
+apply from: 'publish.gradle'
+bintray.publications = ['maven']
+bintrayUpload.dependsOn publishToMavenLocal
+
