@@ -110,10 +110,6 @@ public final class MultiVisualEffect implements VisualEffect, Disposable {
 
 	@Override
 	public void dispose() {
-		for (VisualEffect effect : effects)
-			if (effect instanceof Disposable)
-				((Disposable) effect).dispose();
-
 		buffer.dispose();
 		if (copy != null)
 			copy.dispose();
