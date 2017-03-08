@@ -27,6 +27,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 
 public final class BouncingBuffer implements Disposable {
@@ -44,22 +45,12 @@ public final class BouncingBuffer implements Disposable {
 	
 	private TextureWrap uWrap;
 	private TextureWrap vWrap;
+	
+	private Rectangle viewport = null;
 
 	public BouncingBuffer(Format format, int width, int height, boolean hasDepth) {
-		buffer1 = new FrameBuffer(format, width, height, hasDepth) {
-			@Override
-			public void end() {
-				super.end();
-				bounce();
-			}
-		};
-		buffer2 = new FrameBuffer(format, width, height, hasDepth) {
-			@Override
-			public void end() {
-				super.end();
-				bounce();
-			}
-		};
+		buffer1 = new BouncyBuffer(format, width, height, hasDepth);
+		buffer2 = new BouncyBuffer(format, width, height, hasDepth);
 		current = buffer1;
 
 		this.width = this.buffer1.getWidth();
@@ -69,6 +60,14 @@ public final class BouncingBuffer implements Disposable {
 		this.vWrap = TextureWrap.ClampToEdge;
 
 		rebind();
+	}
+
+	public Rectangle getViewport() {
+		return viewport;
+	}
+
+	public void setViewport(Rectangle viewport) {
+		this.viewport = viewport;
 	}
 
 	public void rebind() {
@@ -127,5 +126,22 @@ public final class BouncingBuffer implements Disposable {
 
 	private void bounce() {
 		current = (current == buffer1) ? buffer2 : buffer1;
+	}
+	
+	private class BouncyBuffer extends FrameBuffer {
+
+		public BouncyBuffer(Format format, int width, int height, boolean hasDepth) {
+			super(format, width, height, hasDepth);
+		}
+
+		@Override
+		public void end() {
+			if (viewport == null)
+				super.end();
+			else {
+				super.end((int) viewport.x, (int) viewport.y, (int) viewport.width, (int) viewport.height);
+			}
+			bounce();
+		}
 	}
 }

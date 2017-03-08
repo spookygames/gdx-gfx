@@ -53,6 +53,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -63,7 +64,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ArraySelection;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import net.spookygames.gdx.gfx.Effect;
 import net.spookygames.gdx.gfx.MultiTemporalVisualEffect;
@@ -82,6 +84,8 @@ public class GdxGfxDemo implements ApplicationListener {
 	Stage stage;
 	
 	MultiTemporalVisualEffect effect;
+	
+	Rectangle viewportRectangle = new Rectangle();
 
 	@Override
 	public void create() {
@@ -89,6 +93,9 @@ public class GdxGfxDemo implements ApplicationListener {
 		/******************/
 		/* Initialization */
 		/******************/
+
+		final int virtualWidth = 700;
+		final int virtualHeight = 500;
 
 		Gdx.graphics.setTitle("gdx-gfx -- demo");
 		
@@ -155,9 +162,11 @@ public class GdxGfxDemo implements ApplicationListener {
 		rootTable.addActor(static1);
 		rootTable.addActor(static2);
 		
-		stage = new Stage(new ScreenViewport(camera), batch);
+		FitViewport viewport = new FitViewport(virtualWidth, virtualHeight, camera);
+		stage = new Stage(viewport, batch);
 		stage.addActor(rootTable);
 
+		effect.getCombinedBuffer().setViewport(viewportRectangle);
 		
 		/********************/
 		/* Moving animation */
@@ -245,10 +254,13 @@ public class GdxGfxDemo implements ApplicationListener {
 		stage.act(delta);
 		
 		/* Draw */
+		
+		Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		effect.capture();
 		
-		Gdx.gl.glClearColor(0, 0, 0, 0);
+		Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		stage.draw();
@@ -258,7 +270,9 @@ public class GdxGfxDemo implements ApplicationListener {
 
 	@Override
 	public void resize(int width, int height) {
-		stage.getViewport().update(width, height, true);
+		Viewport viewport = stage.getViewport();
+		viewport.update(width, height, true);
+		viewportRectangle.set(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
 	}
 
 	@Override
@@ -283,8 +297,8 @@ public class GdxGfxDemo implements ApplicationListener {
 
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
-		config.width = 500 + 200;
-		config.height = 500;
+		config.width = 800;
+		config.height = 600;
 
 		new LwjglApplication(listener, config);
 	}
