@@ -23,45 +23,37 @@
  */
 package net.spookygames.gdx.gfx;
 
-import org.adrianwalker.multilinestring.Multiline;
-
 public class CommonShaders {
 	
-	/**
-#ifdef GL_ES
-	#define PRECISION mediump
-	precision PRECISION float;
-#else
-	#define PRECISION
-#endif
+	public static final String Screenspace = "#ifdef GL_ES"
+			+ "\n	#define PRECISION mediump"
+			+ "\n	precision PRECISION float;"
+			+ "\n#else"
+			+ "\n	#define PRECISION"
+			+ "\n#endif"
+			+ "\n"
+			+ "\nattribute vec4 a_position;"
+			+ "\nattribute vec2 a_texCoord0;"
+			+ "\nvarying vec2 v_texCoords;"
+			+ "\n"
+			+ "\nvoid main()"
+			+ "\n{"
+			+ "\n	v_texCoords = a_texCoord0;"
+			+ "\n	gl_Position = a_position;"
+			+ "\n}";
 
-attribute vec4 a_position;
-attribute vec2 a_texCoord0;
-varying vec2 v_texCoords;
-
-void main()
-{
-	v_texCoords = a_texCoord0;
-	gl_Position = a_position;
-}
-	*/
-	@Multiline public static String Screenspace;
-
-	/**
-#ifdef GL_ES
-	#define PRECISION mediump
-	precision PRECISION float;
-#else
-	#define PRECISION
-#endif
-
-uniform sampler2D u_texture0;
-varying vec2 v_texCoords;
-
-void main(void)
-{
-	gl_FragColor = texture2D(u_texture0, v_texCoords);
-}
-	*/
-	@Multiline public static String Copy;
+	public static final String Copy = "#ifdef GL_ES"
+			+ "\n	#define PRECISION mediump"
+			+ "\n	precision PRECISION float;"
+			+ "\n#else"
+			+ "\n	#define PRECISION"
+			+ "\n#endif"
+			+ "\n"
+			+ "\nuniform sampler2D u_texture0;"
+			+ "\nvarying vec2 v_texCoords;"
+			+ "\n"
+			+ "\nvoid main(void)"
+			+ "\n{"
+			+ "\n	gl_FragColor = texture2D(u_texture0, v_texCoords);"
+			+ "\n}";
 }
