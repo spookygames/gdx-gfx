@@ -45,6 +45,10 @@ public class NamedBufferPool implements Disposable {
 		this.factory = factory;
 	}
 
+	public FrameBufferFactory getFactory() {
+		return factory;
+	}
+
 	public FrameBuffer get(String name) {
 		FrameBuffer buffer = frameBuffers.get(name);
 		if (buffer == null) {
