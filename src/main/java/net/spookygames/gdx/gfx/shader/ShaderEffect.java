@@ -84,7 +84,7 @@ public abstract class ShaderEffect implements VisualEffect, Disposable {
 	
 	@Override
 	public void dispose() {
-		if(--meshRefCount <= 0) {
+		if(mesh != null && --meshRefCount <= 0) {
 			mesh.dispose();
 			mesh = null;
 		}
