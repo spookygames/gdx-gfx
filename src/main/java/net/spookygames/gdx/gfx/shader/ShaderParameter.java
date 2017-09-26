@@ -33,14 +33,21 @@ public abstract class ShaderParameter {
 	public ShaderParameter(String name) {
 		this.name = name;
 	}
-	
+
+	/**
+	 * Applies this parameter to given ShaderProgram, using shader.setUniform*
+	 * and such.
+	 *
+	 * @param shader
+	 *            the ShaderProgram to apply this parameter to
+	 */
 	public abstract void apply(ShaderProgram shader);
-	
+
 	protected final void valueChanged() {
-		if(listener != null)
+		if (listener != null)
 			listener.onValueChanged(this);
 	}
-	
+
 	static interface ShaderParameterValueChangedListener {
 		void onValueChanged(ShaderParameter parameter);
 	}

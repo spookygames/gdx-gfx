@@ -30,6 +30,12 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 
+/**
+ * A double FrameBuffer thingy. Behaves more or less like a single FrameBuffer
+ * but every time a call to end() is issued, buffers swap. This allows to apply
+ * effect after effect on a single BouncingBuffer. Bonus point: handles viewport
+ * somehow.
+ */
 public final class BouncingBuffer implements Disposable {
 
 	public final int width;
@@ -42,10 +48,10 @@ public final class BouncingBuffer implements Disposable {
 	private Texture texture2;
 
 	private FrameBuffer current;
-	
+
 	private TextureWrap uWrap;
 	private TextureWrap vWrap;
-	
+
 	private Rectangle viewport = null;
 
 	public BouncingBuffer(Format format, int width, int height, boolean hasDepth) {
@@ -55,7 +61,7 @@ public final class BouncingBuffer implements Disposable {
 
 		this.width = this.buffer1.getWidth();
 		this.height = this.buffer1.getHeight();
-		
+
 		this.uWrap = TextureWrap.ClampToEdge;
 		this.vWrap = TextureWrap.ClampToEdge;
 
@@ -73,7 +79,7 @@ public final class BouncingBuffer implements Disposable {
 	public void rebind() {
 		texture1 = buffer1.getColorBufferTexture();
 		texture2 = buffer2.getColorBufferTexture();
-		
+
 		texture1.setWrap(uWrap, vWrap);
 		texture2.setWrap(uWrap, vWrap);
 	}
@@ -81,7 +87,7 @@ public final class BouncingBuffer implements Disposable {
 	public void setTextureWrap(TextureWrap u, TextureWrap v) {
 		this.uWrap = u;
 		this.vWrap = v;
-		
+
 		texture1.setWrap(u, v);
 		texture2.setWrap(u, v);
 	}
@@ -127,7 +133,7 @@ public final class BouncingBuffer implements Disposable {
 	private void bounce() {
 		current = (current == buffer1) ? buffer2 : buffer1;
 	}
-	
+
 	private class BouncyBuffer extends FrameBuffer {
 
 		public BouncyBuffer(Format format, int width, int height, boolean hasDepth) {

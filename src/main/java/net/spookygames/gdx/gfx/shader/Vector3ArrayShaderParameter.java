@@ -52,6 +52,15 @@ public class Vector3ArrayShaderParameter extends ShaderParameter {
 		return tmp;
 	}
 
+	/**
+	 * Sets the value of this Vector3[] parameter. Event is triggered only if
+	 * new Vector3[] is different from former Vector3[], tested with array
+	 * length and coordinates matching.
+	 *
+	 * @param value
+	 *            the new Vector3[] value
+	 * @return this shader parameter, for chaining
+	 */
 	public Vector3ArrayShaderParameter setValue(Vector3[] value) {
 		if (this.length == -1) {
 			this.length = value.length * 3;
@@ -108,6 +117,13 @@ public class Vector3ArrayShaderParameter extends ShaderParameter {
 		return this;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.spookygames.gdx.gfx.shader.ShaderParameter#apply(com.badlogic.gdx.
+	 * graphics.glutils.ShaderProgram)
+	 */
 	@Override
 	public void apply(ShaderProgram shader) {
 		shader.setUniform3fv(name, value, 0, length);

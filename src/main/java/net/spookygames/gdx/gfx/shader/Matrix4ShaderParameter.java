@@ -38,6 +38,14 @@ public class Matrix4ShaderParameter extends ShaderParameter {
 		return this.value;
 	}
 
+	/**
+	 * Sets the value of this Matrix4 parameter. Event is triggered only if new
+	 * Matrix4 is different from former Matrix4, tested with .equals().
+	 *
+	 * @param value
+	 *            the new Matrix4 value
+	 * @return this shader parameter, for chaining
+	 */
 	public Matrix4ShaderParameter setValue(Matrix4 value) {
 		if (!this.value.equals(value)) {
 			this.value.set(value);
@@ -46,6 +54,13 @@ public class Matrix4ShaderParameter extends ShaderParameter {
 		return this;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.spookygames.gdx.gfx.shader.ShaderParameter#apply(com.badlogic.gdx.
+	 * graphics.glutils.ShaderProgram)
+	 */
 	@Override
 	public void apply(ShaderProgram shader) {
 		shader.setUniformMatrix(name, value);

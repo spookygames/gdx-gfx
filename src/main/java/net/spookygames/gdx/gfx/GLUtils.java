@@ -33,6 +33,11 @@ public class GLUtils {
 
 	private static ByteBuffer byteBuffer = BufferUtils.newByteBuffer(32);
 
+	/**
+	 * Checks if blending is enabled in current GL context.
+	 *
+	 * @return true if blending is enabled, false otherwise
+	 */
 	public static boolean isBlendingEnabled() {
 		Gdx.gl20.glGetBooleanv(GL20.GL_BLEND, byteBuffer);
 		boolean enabled = (byteBuffer.get() == 1);

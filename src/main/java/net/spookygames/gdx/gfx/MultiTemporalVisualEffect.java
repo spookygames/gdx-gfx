@@ -28,6 +28,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.utils.Disposable;
 
+/**
+ * The MultiTemporalVisualEffect combines the aspects of both
+ * MultiTemporalEffect and MultiVisualEffect. All in one! Bargain!
+ */
 public class MultiTemporalVisualEffect extends MultiTemporalEffect implements VisualEffect, Disposable {
 
 	private final MultiVisualEffect visual;
@@ -89,11 +93,11 @@ public class MultiTemporalVisualEffect extends MultiTemporalEffect implements Vi
 	public void rebind() {
 		visual.rebind();
 	}
-	
+
 	public void render(FrameBuffer source, FrameBuffer destination) {
 		visual.render(source, destination);
 	}
-	
+
 	@Override
 	public void render(Texture source, FrameBuffer resultBuffer) {
 		visual.render(source, resultBuffer);

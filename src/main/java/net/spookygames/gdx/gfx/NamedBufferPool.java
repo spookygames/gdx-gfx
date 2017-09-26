@@ -29,7 +29,9 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectMap;
 
 /**
- * 
+ * The NameBufferPool manages a set of FrameBuffers indexed by name. If missing,
+ * FrameBuffers are created with a given FrameBufferFactory. FrameBuffers can
+ * also be released afterwards.
  */
 public class NamedBufferPool implements Disposable {
 
@@ -49,6 +51,14 @@ public class NamedBufferPool implements Disposable {
 		return factory;
 	}
 
+	/**
+	 * Gets the FrameBuffer indexed by given name. If it does not exist it will
+	 * be created by this pool's FrameBufferFactory.
+	 * 
+	 * @param name
+	 *            the FrameBuffer's name
+	 * @return the FrameBuffer of given name
+	 */
 	public FrameBuffer get(String name) {
 		FrameBuffer buffer = frameBuffers.get(name);
 		if (buffer == null) {
@@ -58,16 +68,45 @@ public class NamedBufferPool implements Disposable {
 		return buffer;
 	}
 
+	/**
+	 * Gets the Texture from FrameBuffer indexed by given name. If it does not
+	 * exist the FrameBuffer will be created by this pool's FrameBufferFactory.
+	 * Texture returned is the color buffer texture from this FrameBuffer.
+	 * 
+	 * @param name
+	 *            the FrameBuffer's name
+	 * @return the color buffer Texture from the FrameBuffer of given name
+	 */
 	public Texture getTexture(String name) {
 		return get(name).getColorBufferTexture();
 	}
 
+	/**
+	 * Gets the FrameBuffer indexed by given name and immediately draws to it.
+	 * 
+	 * @param name
+	 *            the FrameBuffer's name
+	 * @param drawer
+	 *            the drawer to write into the FrameBuffer.
+	 * @return the FrameBuffer of given name
+	 */
 	public FrameBuffer draw(String name, Drawer drawer) {
 		FrameBuffer buffer = get(name);
 		drawer.draw(buffer);
 		return buffer;
 	}
 
+	/**
+	 * Gets the FrameBuffer indexed by given name and immediately draws to it.
+	 * Provided Runnable will be run between calls to FrameBuffer's begin() and
+	 * end() methods.
+	 * 
+	 * @param name
+	 *            the FrameBuffer's name
+	 * @param drawer
+	 *            the drawer to write into the FrameBuffer.
+	 * @return the FrameBuffer of given name
+	 */
 	public FrameBuffer draw(String name, Runnable drawer) {
 		FrameBuffer buffer = get(name);
 		buffer.begin();
@@ -76,6 +115,13 @@ public class NamedBufferPool implements Disposable {
 		return buffer;
 	}
 
+	/**
+	 * Releases the FrameBuffer indexed by given name. It will be removed from
+	 * this pool then disposed.
+	 * 
+	 * @param name
+	 *            the FrameBuffer's name
+	 */
 	public void free(String name) {
 		FrameBuffer fb = frameBuffers.remove(name);
 		if (fb != null)
@@ -88,7 +134,7 @@ public class NamedBufferPool implements Disposable {
 			fb.dispose();
 		frameBuffers.clear();
 	}
-	
+
 	public interface Drawer {
 		void draw(FrameBuffer buffer);
 	}

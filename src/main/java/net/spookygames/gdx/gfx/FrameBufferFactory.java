@@ -91,6 +91,12 @@ public class FrameBufferFactory {
 		this.depth = depth;
 	}
 
+	/**
+	 * Get the Pixmap.Format from this factory. If not yet defined, it will be
+	 * computed from the use32bits and alphaChannel properties.
+	 * 
+	 * @return the Pixmap.Format from this factory
+	 */
 	public Pixmap.Format getFormat() {
 		if (format == null)
 			format = defineFormat(use32Bits, alphaChannel);
@@ -106,9 +112,8 @@ public class FrameBufferFactory {
 	}
 
 	private static Format defineFormat(boolean use32Bits, boolean alphaChannel) {
-		return use32Bits ? 
-				alphaChannel ? Format.RGBA8888 : Format.RGB888 :
-				alphaChannel ? Format.RGBA4444 : Format.RGB565;
+		return use32Bits ? alphaChannel ? Format.RGBA8888 : Format.RGB888
+				: alphaChannel ? Format.RGBA4444 : Format.RGB565;
 	}
 
 }

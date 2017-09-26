@@ -25,9 +25,18 @@ package net.spookygames.gdx.gfx;
 
 public interface TemporalEffect extends Effect {
 
-	/* Return true if finished */
+	/**
+	 * Returns true if finished.
+	 * 
+	 * @param deltaTime
+	 *            time in seconds since last update
+	 * @return true if effect has ended, false otherwise
+	 */
 	boolean update(float deltaTime);
-	
+
+	/**
+	 * Resets time for this TemporalEffect.
+	 */
 	void reset();
 
 }

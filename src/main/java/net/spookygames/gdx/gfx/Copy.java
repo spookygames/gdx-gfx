@@ -25,6 +25,10 @@ package net.spookygames.gdx.gfx;
 
 import net.spookygames.gdx.gfx.shader.OwnedSinglePassShaderEffect;
 
+/**
+ * A very simple ShaderEffect, effectively only copying pixels from one
+ * FrameBuffer to another.
+ */
 public final class Copy extends OwnedSinglePassShaderEffect {
 
 	public Copy() {

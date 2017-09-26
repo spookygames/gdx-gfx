@@ -38,6 +38,16 @@ public class Vector2ShaderParameter extends ShaderParameter {
 		return this.value;
 	}
 
+	/**
+	 * Sets the value of this Vector2 parameter. Event is triggered only if new
+	 * coordinates are different from former coordinates.
+	 *
+	 * @param x
+	 *            the x-coordinates of the new Vector2 value
+	 * @param y
+	 *            the y-coordinates of the new Vector2 value
+	 * @return this shader parameter, for chaining
+	 */
 	public Vector2ShaderParameter setValue(float x, float y) {
 		if (this.value.x != x || this.value.y != y) {
 			this.value.set(x, y);
@@ -46,6 +56,14 @@ public class Vector2ShaderParameter extends ShaderParameter {
 		return this;
 	}
 
+	/**
+	 * Sets the value of this Vector2 parameter. Event is triggered only if new
+	 * Vector2 is different from former Vector2, tested with .equals().
+	 *
+	 * @param value
+	 *            the new Vector2 value
+	 * @return this shader parameter, for chaining
+	 */
 	public Vector2ShaderParameter setValue(Vector2 value) {
 		if (!this.value.equals(value)) {
 			this.value.set(value);
@@ -54,6 +72,13 @@ public class Vector2ShaderParameter extends ShaderParameter {
 		return this;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.spookygames.gdx.gfx.shader.ShaderParameter#apply(com.badlogic.gdx.
+	 * graphics.glutils.ShaderProgram)
+	 */
 	@Override
 	public void apply(ShaderProgram shader) {
 		shader.setUniformf(name, value);

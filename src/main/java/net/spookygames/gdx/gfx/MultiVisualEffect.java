@@ -30,6 +30,10 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
+/**
+ * A convenience class to chain multiple VisualEffects. Uses a BouncingBuffer
+ * for this purpose.
+ */
 public final class MultiVisualEffect implements VisualEffect, Disposable {
 
 	private final BouncingBuffer buffer;
@@ -73,15 +77,23 @@ public final class MultiVisualEffect implements VisualEffect, Disposable {
 			e.rebind();
 	}
 
+	/**
+	 * Begins capture of inner BoundingBuffer.
+	 */
 	public void capture() {
 		buffer.begin();
 	}
 
+	/**
+	 * Ends capture of inner BoundingBuffer.
+	 *
+	 * @return the texture generated from the capture
+	 */
 	public Texture endCapture() {
 		buffer.end();
 		return buffer.getResultTexture();
 	}
-	
+
 	public void render(FrameBuffer source, FrameBuffer destination) {
 		render(source.getColorBufferTexture(), destination);
 	}

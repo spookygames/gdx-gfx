@@ -37,6 +37,14 @@ public class FloatShaderParameter extends ShaderParameter {
 		return this.value;
 	}
 
+	/**
+	 * Sets the value of this float parameter. Event is triggered only if new
+	 * float is different from former float.
+	 *
+	 * @param value
+	 *            the new float value
+	 * @return this shader parameter, for chaining
+	 */
 	public FloatShaderParameter setValue(float value) {
 		if (this.value != value) {
 			this.value = value;
@@ -45,6 +53,13 @@ public class FloatShaderParameter extends ShaderParameter {
 		return this;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.spookygames.gdx.gfx.shader.ShaderParameter#apply(com.badlogic.gdx.
+	 * graphics.glutils.ShaderProgram)
+	 */
 	@Override
 	public void apply(ShaderProgram shader) {
 		shader.setUniformf(name, value);

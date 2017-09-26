@@ -52,6 +52,15 @@ public class Vector2ArrayShaderParameter extends ShaderParameter {
 		return tmp;
 	}
 
+	/**
+	 * Sets the value of this Vector2[] parameter. Event is triggered only if
+	 * new Vector2[] is different from former Vector2[], tested with array
+	 * length and coordinates matching.
+	 *
+	 * @param value
+	 *            the new Vector2[] value
+	 * @return this shader parameter, for chaining
+	 */
 	public Vector2ArrayShaderParameter setValue(Vector2[] value) {
 		if (this.length == -1) {
 
@@ -99,6 +108,13 @@ public class Vector2ArrayShaderParameter extends ShaderParameter {
 		return this;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.spookygames.gdx.gfx.shader.ShaderParameter#apply(com.badlogic.gdx.
+	 * graphics.glutils.ShaderProgram)
+	 */
 	@Override
 	public void apply(ShaderProgram shader) {
 		shader.setUniform2fv(name, value, 0, length);

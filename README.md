@@ -27,7 +27,7 @@ Add the pretty **bold** parts into your _build.gradle_ file:
 ## Usage
 
 The library currently exposes two interfaces that you may implement:
-* `VisualEffect` for effects apply to the screen or an intermediate _Frame Buffer Object_ (FBO)
+* `VisualEffect` for effects that apply to the screen or to an intermediate _Frame Buffer Object_ (FBO)
 * `TemporalEffect` for effects that evolve with time
 
 ### Visual effects
@@ -50,7 +50,7 @@ To this extent, the ShaderEffect abstract class brings some extra candy to your 
 
 First, rendering is applied by default to the simplest mesh encompassing the whole screen. So instead of overriding the `render(Texture source, FrameBuffer destination)` method, you override `actualRender(FrameBuffer destination)` as mesh creation/usage is basically handled by the class.
 
-Second, all the fluff around _shader parameters_ is streamlined, just look at the example below:
+Second, all the fluff around _shader parameters_ is streamlined, just look at the example below.
 
 Considering the (oversimplified) shader:
 
@@ -123,14 +123,14 @@ public void setFilter(float filter) {
 
 All proper GL calls and rebinding are automagically handled!
 
-Various parameter types are available (Int, Float, FloatArray, Vector2, Vector2Array, Vector3, Vector3Array, Color, Matrix3, Matrix4), more could be added later.
+Various parameter types are available (int, float, float[], Vector2, Vector2[], Vector3, Vector3[], Color, Matrix3, Matrix4), more could be added later.
 
 Some even-more-streamlined classes are available for even-simpler shader use cases.
 If you need an effect with a single shader pass, you may use SinglePassShaderEffect and only provide the `ShaderProgram`.
-If you don't feel like creating the `ShaderProgram` yourself, go with an `OwnedSinglePassShaderEffect` which will take care of creating (and disposing) the `ShaderProgram` object.
+If you don't feel like creating the `ShaderProgram` yourself, go with an `OwnedSinglePassShaderEffect` which will take care of creating (and disposing) the `ShaderProgram` object for you.
 
 Important side note:
-The `ShaderEffect` and `SinglePassShaderEffect` are not responsible for creating the `ShaderProgram` object, thus not for destroying it either. It is **your** responsibility to call `dispose()` on the program after use!
+The `ShaderEffect` and `SinglePassShaderEffect` are not responsible for creating the `ShaderProgram` object, thus not for destroying it either. It is **your** responsibility to call `dispose()` on the shader program after use!
 
 #### Examples
 
@@ -144,7 +144,7 @@ A temporal effect (implementing the `TemporalEffect` interface) is updated each 
 
 Two methods need to be implemented for a temporal effect:
 
-<pre>boolean update(float deltaTime)</pre> Called every frame with the time elapsed since previous frame. Return true if the effect is finished and should not be applied anymore.
+<pre>boolean update(float deltaTime)</pre> Called every frame with the time elapsed since previous frame, in seconds. Return true if the effect is finished and should not be applied anymore.
 
 <pre>void reset()</pre> Called in order to re-use the temporal effect.
 
@@ -164,7 +164,7 @@ Important note: You can also use `MultiVisualEffect` in a simple way! Call `capt
 	
 `MultiTemporalEffect` lets you combine several temporal effects in parallel. Automatically removes finished effects. Is finished when all its children are finished. `MultiTemporalEffect` being a `TemporalEffect`, you can combine several layers of them on top of each other.
 	
-`MultiTemporalVisualEffect` is a combination of the two previous combined effects, allowing you to combine combinations of combinations in a combining way.
+`MultiTemporalVisualEffect` is a combination of the two previous combined effects, allowing you to combine combinations of combinations in a smooth, combining way.
 
 ### Utilities
 

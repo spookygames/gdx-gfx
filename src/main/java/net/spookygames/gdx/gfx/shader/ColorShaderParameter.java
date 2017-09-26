@@ -38,6 +38,14 @@ public class ColorShaderParameter extends ShaderParameter {
 		return this.value;
 	}
 
+	/**
+	 * Sets the value of this Color parameter. Event is triggered only if new
+	 * Color is different from former Color, tested with .equals().
+	 *
+	 * @param value
+	 *            the new Color value
+	 * @return this shader parameter, for chaining
+	 */
 	public ColorShaderParameter setValue(Color value) {
 		if (!this.value.equals(value)) {
 			this.value.set(value);
@@ -46,6 +54,13 @@ public class ColorShaderParameter extends ShaderParameter {
 		return this;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.spookygames.gdx.gfx.shader.ShaderParameter#apply(com.badlogic.gdx.
+	 * graphics.glutils.ShaderProgram)
+	 */
 	@Override
 	public void apply(ShaderProgram shader) {
 		shader.setUniformf(name, value);

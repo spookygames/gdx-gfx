@@ -25,6 +25,7 @@ package net.spookygames.gdx.gfx;
 
 public class CommonShaders {
 	
+	/** A simple screenspace vertex shader. */
 	public static final String Screenspace = "#ifdef GL_ES"
 			+ "\n	#define PRECISION mediump"
 			+ "\n	precision PRECISION float;"
@@ -42,6 +43,7 @@ public class CommonShaders {
 			+ "\n	gl_Position = a_position;"
 			+ "\n}";
 
+	/** A simple copy fragment shader. */
 	public static final String Copy = "#ifdef GL_ES"
 			+ "\n	#define PRECISION mediump"
 			+ "\n	precision PRECISION float;"

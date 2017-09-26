@@ -40,19 +40,35 @@ public class FloatArrayShaderParameter extends ShaderParameter {
 		return this.value;
 	}
 
+	/**
+	 * Sets the value of this color parameter. Event is triggered only if new
+	 * float array is different from former float array, tested with array
+	 * length and java.util.Arrays.equals().
+	 *
+	 * @param value
+	 *            the new float[] value
+	 * @return this shader parameter, for chaining
+	 */
 	public FloatArrayShaderParameter setValue(float[] value) {
 		if (this.length == -1) {
 			this.value = value;
 			this.length = value.length;
 			valueChanged();
-		} else if(value.length <= this.length && !Arrays.equals(this.value, value)) {
-			for(int i = 0 ; i < value.length ; i++)
+		} else if (value.length <= this.length && !Arrays.equals(this.value, value)) {
+			for (int i = 0; i < value.length; i++)
 				this.value[i] = value[i];
 			valueChanged();
 		}
 		return this;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.spookygames.gdx.gfx.shader.ShaderParameter#apply(com.badlogic.gdx.
+	 * graphics.glutils.ShaderProgram)
+	 */
 	@Override
 	public void apply(ShaderProgram shader) {
 		shader.setUniform1fv(name, value, 0, length);

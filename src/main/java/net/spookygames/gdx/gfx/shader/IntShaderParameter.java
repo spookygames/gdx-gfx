@@ -37,6 +37,14 @@ public class IntShaderParameter extends ShaderParameter {
 		return this.value;
 	}
 
+	/**
+	 * Sets the value of this integer parameter. Event is triggered only if new
+	 * integer is different from former integer.
+	 *
+	 * @param value
+	 *            the new integer value
+	 * @return this shader parameter, for chaining
+	 */
 	public IntShaderParameter setValue(int value) {
 		if (this.value != value) {
 			this.value = value;
@@ -45,6 +53,13 @@ public class IntShaderParameter extends ShaderParameter {
 		return this;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.spookygames.gdx.gfx.shader.ShaderParameter#apply(com.badlogic.gdx.
+	 * graphics.glutils.ShaderProgram)
+	 */
 	@Override
 	public void apply(ShaderProgram shader) {
 		shader.setUniformi(name, value);

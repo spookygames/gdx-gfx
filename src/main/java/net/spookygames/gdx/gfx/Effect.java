@@ -23,6 +23,9 @@
  */
 package net.spookygames.gdx.gfx;
 
+/**
+ * Base interface for all gdx-gfx effects.
+ */
 public interface Effect {
 
 }

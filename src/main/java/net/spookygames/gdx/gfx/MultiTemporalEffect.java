@@ -25,6 +25,10 @@ package net.spookygames.gdx.gfx;
 
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * A convenience class to manage multiple TemporalEffects. The TemporalEffects
+ * added are applied simultaneously.
+ */
 public class MultiTemporalEffect implements TemporalEffect {
 
 	private final Array<TemporalEffect> effects = new Array<TemporalEffect>();
@@ -44,7 +48,7 @@ public class MultiTemporalEffect implements TemporalEffect {
 	public void clearEffects() {
 		effects.clear();
 	}
-	
+
 	public boolean hasEffects() {
 		return effects.size > 0;
 	}
@@ -52,10 +56,10 @@ public class MultiTemporalEffect implements TemporalEffect {
 	@Override
 	public boolean update(float deltaTime) {
 		boolean allEnded = true;
-		for(int i = effects.size - 1 ; i >= 0 ; i--) {
+		for (int i = effects.size - 1; i >= 0; i--) {
 			TemporalEffect effect = effects.get(i);
 			boolean ended = effect.update(deltaTime);
-			if(ended) {
+			if (ended) {
 				removeEffect(effect);
 				effect.reset();
 			}

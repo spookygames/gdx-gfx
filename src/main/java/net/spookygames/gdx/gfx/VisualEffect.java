@@ -28,8 +28,19 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
 public interface VisualEffect extends Effect {
 
+	/**
+	 * Rebinds visual effect to OpenGL context.
+	 */
 	void rebind();
 
+	/**
+	 * Renders from a source Texture to a destination FrameBuffer.
+	 * 
+	 * @param source
+	 *            the Texture to read pixel data from
+	 * @param destination
+	 *            the FrameBuffer to write to
+	 */
 	void render(Texture source, FrameBuffer destination);
 
 }

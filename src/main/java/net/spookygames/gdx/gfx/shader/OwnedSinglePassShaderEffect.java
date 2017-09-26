@@ -25,9 +25,21 @@ package net.spookygames.gdx.gfx.shader;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
+/**
+ * A SinglePassShaderEffect which is responsible for the creation and
+ * destruction of the ShaderProgram.
+ */
 public class OwnedSinglePassShaderEffect extends SinglePassShaderEffect {
 
-	/* Owns the shader, so dispose it in the end */
+	/**
+	 * Instantiates a new OwnedSinglePassShaderEffect. It owns the shader, so
+	 * will dispose it in the end.
+	 *
+	 * @param vertex
+	 *            the text for vertex shader
+	 * @param fragment
+	 *            the text for fragment shader
+	 */
 	public OwnedSinglePassShaderEffect(String vertex, String fragment) {
 		super(new ShaderProgram(vertex, fragment));
 	}

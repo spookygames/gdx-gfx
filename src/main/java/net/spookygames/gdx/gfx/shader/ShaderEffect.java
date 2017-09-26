@@ -51,6 +51,7 @@ public abstract class ShaderEffect implements VisualEffect, Disposable {
 
 	// Mesh with *very* basic reference counting
 	protected static int meshRefCount = 0;
+
 	protected static Mesh mesh = null;
 
 	protected final ShaderProgram program;
@@ -62,34 +63,52 @@ public abstract class ShaderEffect implements VisualEffect, Disposable {
 		}
 	};
 
-	/** Does NOT own shader, so won't dispose it! */
+	/**
+	 * Instantiates a new ShaderEffect. The ShaderEffect will NOT own shader
+	 * program, so it will not dispose it either!
+	 * 
+	 * @param program
+	 *            the ShaderProgram to use for this effect
+	 */
 	public ShaderEffect(ShaderProgram program) {
 		this.program = program;
-		
-		if(meshRefCount++ <= 0) {
+
+		if (meshRefCount++ <= 0) {
 			mesh = new Mesh(VertexDataType.VertexArray, true, 4, 0,
 					new VertexAttribute(Usage.Position, 2, ShaderProgram.POSITION_ATTRIBUTE),
-//					new VertexAttribute(Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE),
 					new VertexAttribute(Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
-				float[] verts = {
-						//	vertex		texture
-							-1, -1,		0f, 0f,
-							 1, -1,		1f, 0f,
-							 1,  1,		1f, 1f,
-							-1,  1,		0f, 1f,
-				};
-				mesh.setVertices(verts);
+
+			// @formatter:off
+			float[] verts = {
+					// vertex    texture
+					  -1, -1,    0f, 0f,
+					   1, -1,    1f, 0f,
+					   1,  1,    1f, 1f,
+					  -1,  1,    0f, 1f,
+			};
+			// @formatter:on
+
+			mesh.setVertices(verts);
 		}
 	}
-	
+
 	@Override
 	public void dispose() {
-		if(mesh != null && --meshRefCount <= 0) {
+		if (mesh != null && --meshRefCount <= 0) {
 			mesh.dispose();
 			mesh = null;
 		}
 	}
-	
+
+	/**
+	 * Renders from a source FrameBuffer (using its color buffer texture) to a
+	 * destination FrameBuffer.
+	 * 
+	 * @param source
+	 *            the FrameBuffer to read texture data from
+	 * @param destination
+	 *            the FrameBuffer to write to
+	 */
 	public void render(FrameBuffer source, FrameBuffer destination) {
 		render(source.getColorBufferTexture(), destination);
 	}
@@ -110,15 +129,15 @@ public abstract class ShaderEffect implements VisualEffect, Disposable {
 		mesh.render(program, GL20.GL_TRIANGLE_FAN, 0, 4);
 		program.end();
 	}
-	
+
 	@Override
 	public void rebind() {
 		program.begin();
-		for(ShaderParameter parameter : parameters)
+		for (ShaderParameter parameter : parameters)
 			parameter.apply(program);
 		program.end();
 	}
-	
+
 	protected void rebindParameter(ShaderParameter parameter) {
 		program.begin();
 		parameter.apply(program);
@@ -168,7 +187,7 @@ public abstract class ShaderEffect implements VisualEffect, Disposable {
 	protected Matrix4ShaderParameter registerParameter(String name, Matrix4 initialValue) {
 		return registerParameter(new Matrix4ShaderParameter(name).setValue(initialValue));
 	}
-	
+
 	protected <T extends ShaderParameter> T registerParameter(T parameter) {
 		parameters.add(parameter);
 		rebindParameter(parameter);

@@ -26,16 +26,25 @@ package net.spookygames.gdx.gfx.shader;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
+/**
+ * An effect which performs a single rendering pass with the ShaderProgram
+ * provided. It is NOT responsible for the creation and destruction of the
+ * ShaderProgram.
+ */
 public class SinglePassShaderEffect extends ShaderEffect {
 
-//	private final IntShaderParameter texture;
-
-	/* Does NOT own shader, so won't dispose it! */
+	/**
+	 * Instantiates a new SinglePassShaderEffect. The effect does NOT own
+	 * shader, so it will not dispose it!
+	 *
+	 * @param program
+	 *            the ShaderProgram to apply
+	 */
 	public SinglePassShaderEffect(ShaderProgram program) {
 		super(program);
-		if(!program.isCompiled())
+		if (!program.isCompiled())
 			System.err.println(program.getLog());
-		/*texture = */registerParameter("u_texture0", u_texture0);
+		registerParameter("u_texture0", u_texture0);
 	}
 
 	@Override
