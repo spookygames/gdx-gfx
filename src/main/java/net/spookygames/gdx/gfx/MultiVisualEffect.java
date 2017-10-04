@@ -115,7 +115,7 @@ public final class MultiVisualEffect implements VisualEffect, Disposable {
 			effects.first().render(source, buffer.getCurrentBuffer());
 			for (int i = 1; i < effects.size - 1; i++)
 				effects.get(i).render(buffer.getResultTexture(), buffer.getCurrentBuffer());
-			effects.peek().render(buffer.getResultTexture(), null);
+			effects.peek().render(buffer.getResultTexture(), destination);
 			break;
 		}
 	}
