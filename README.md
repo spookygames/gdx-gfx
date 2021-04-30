@@ -15,7 +15,7 @@ Add the pretty **bold** parts into your _build.gradle_ file:
         
         dependencies {
             ...
-            <b>compile "games.spooky.gdx:gdx-gfx:0.0.4"</b>
+            <b>compile "games.spooky.gdx:gdx-gfx:1.0.0"</b>
         }
     }
 </pre>
