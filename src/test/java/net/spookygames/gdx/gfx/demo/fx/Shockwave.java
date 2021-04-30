@@ -23,8 +23,6 @@
  */
 package net.spookygames.gdx.gfx.demo.fx;
 
-import org.adrianwalker.multilinestring.Multiline;
-
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -37,44 +35,40 @@ import net.spookygames.gdx.gfx.shader.Vector2ShaderParameter;
 
 public class Shockwave extends OwnedSinglePassShaderEffect implements TemporalEffect  {
 
-	/**
-// https://github.com/mattdesl/kami-demos/tree/master/src/shockwave
-
-#ifdef GL_ES
-    #define PRECISION mediump
-    #define LOWP lowp
-    precision PRECISION float;
-#else
-    #define PRECISION
-    #define LOWP 
-#endif
-
-uniform sampler2D u_texture0;
-
-uniform vec2 u_center;      // Shock position, normalized 0.0 to 1.0
-uniform float u_time;       // Effect elapsed time, normalized 0.0 to 1.0
-uniform float u_diffusion;
-uniform float u_diffusionp;
-uniform float u_thickness;
-
-varying vec2 v_texCoords;
-
-void main() {
-    vec2 uv = v_texCoords.xy;
-    vec2 texCoord = uv;
-    float dist = distance(uv, u_center);
-    float diff = dist - u_time; 
-    if ((diff <= u_thickness) && (diff >= -u_thickness)) 
-    {
-        float powDiff = 1.0 - pow(abs(diff * u_diffusion), u_diffusionp); 
-        float diffTime = diff * powDiff;
-        vec2 diffUV = normalize(uv - u_center); 
-        texCoord = uv + (diffUV * diffTime);
-    }
-    gl_FragColor = texture2D(u_texture0, texCoord);
-}
-	*/
-	@Multiline static String Shockwave;
+	// https://github.com/mattdesl/kami-demos/tree/master/src/shockwave
+	static final String Shockwave = "#ifdef GL_ES\n" +
+			"    #define PRECISION mediump\n" +
+			"    #define LOWP lowp\n" +
+			"    precision PRECISION float;\n" +
+			"#else\n" +
+			"    #define PRECISION\n" +
+			"    #define LOWP \n" +
+			"#endif\n" +
+			"\n" +
+			"uniform sampler2D u_texture0;\n" +
+			"\n" +
+			"uniform vec2 u_center;      // Shock position, normalized 0.0 to 1.0\n" +
+			"uniform float u_time;       // Effect elapsed time, normalized 0.0 to 1.0\n" +
+			"uniform float u_diffusion;\n" +
+			"uniform float u_diffusionp;\n" +
+			"uniform float u_thickness;\n" +
+			"\n" +
+			"varying vec2 v_texCoords;\n" +
+			"\n" +
+			"void main() {\n" +
+			"    vec2 uv = v_texCoords.xy;\n" +
+			"    vec2 texCoord = uv;\n" +
+			"    float dist = distance(uv, u_center);\n" +
+			"    float diff = dist - u_time; \n" +
+			"    if ((diff <= u_thickness) && (diff >= -u_thickness)) \n" +
+			"    {\n" +
+			"        float powDiff = 1.0 - pow(abs(diff * u_diffusion), u_diffusionp); \n" +
+			"        float diffTime = diff * powDiff;\n" +
+			"        vec2 diffUV = normalize(uv - u_center); \n" +
+			"        texCoord = uv + (diffUV * diffTime);\n" +
+			"    }\n" +
+			"    gl_FragColor = texture2D(u_texture0, texCoord);\n" +
+			"}";
 
 	private final FloatShaderParameter time;
 	private final Vector2ShaderParameter center;

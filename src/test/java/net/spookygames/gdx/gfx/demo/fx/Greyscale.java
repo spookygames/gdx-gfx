@@ -23,40 +23,34 @@
  */
 package net.spookygames.gdx.gfx.demo.fx;
 
-import org.adrianwalker.multilinestring.Multiline;
-
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-
 import net.spookygames.gdx.gfx.CommonShaders;
 import net.spookygames.gdx.gfx.shader.SinglePassShaderEffect;
 
 public class Greyscale extends SinglePassShaderEffect {
 
-	/**
-#ifdef GL_ES
-#define PRECISION mediump
-precision PRECISION float;
-#else
-#define PRECISION
-#endif
-
-varying PRECISION vec2 v_texCoords;
-uniform sampler2D u_texture0;
-
-void main()
-{
-// Greyscale coeffs: 0.2989, 0.5870, 0.1140
-// http://stackoverflow.com/questions/687261/converting-rgb-to-grayscale-intensity
-
-vec4 c = texture2D(u_texture0, v_texCoords);
-float value = c.r * 0.2989 + c.g * 0.5870 + c.b * 0.1140;
-gl_FragColor.r = value;
-gl_FragColor.g = value;
-gl_FragColor.b = value;
-gl_FragColor.a = c.a;
-}
-	*/
-	@Multiline static String Greyscale;
+	static final String Greyscale = "#ifdef GL_ES\n" +
+			"#define PRECISION mediump\n" +
+			"precision PRECISION float;\n" +
+			"#else\n" +
+			"#define PRECISION\n" +
+			"#endif\n" +
+			"\n" +
+			"varying PRECISION vec2 v_texCoords;\n" +
+			"uniform sampler2D u_texture0;\n" +
+			"\n" +
+			"void main()\n" +
+			"{\n" +
+			"// Greyscale coeffs: 0.2989, 0.5870, 0.1140\n" +
+			"// http://stackoverflow.com/questions/687261/converting-rgb-to-grayscale-intensity\n" +
+			"\n" +
+			"vec4 c = texture2D(u_texture0, v_texCoords);\n" +
+			"float value = c.r * 0.2989 + c.g * 0.5870 + c.b * 0.1140;\n" +
+			"gl_FragColor.r = value;\n" +
+			"gl_FragColor.g = value;\n" +
+			"gl_FragColor.b = value;\n" +
+			"gl_FragColor.a = c.a;\n" +
+			"}";
 	
 	public Greyscale() {
 		super(new ShaderProgram(CommonShaders.Screenspace, Greyscale));

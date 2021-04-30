@@ -23,34 +23,30 @@
  */
 package net.spookygames.gdx.gfx.demo.fx;
 
-import org.adrianwalker.multilinestring.Multiline;
-
 import net.spookygames.gdx.gfx.CommonShaders;
 import net.spookygames.gdx.gfx.shader.OwnedSinglePassShaderEffect;
 
 public class Sepia extends OwnedSinglePassShaderEffect {
 
-	/**
-#ifdef GL_ES
-precision lowp float;
-#define MED mediump
-#else
-#define MED
-#endif
-
-varying MED vec2 v_texCoords;
-uniform sampler2D u_texture0;
-
-void main()
-{
-vec4 c = texture2D(u_texture0, v_texCoords);
-gl_FragColor.r = (c.r * 0.393) + (c.g * 0.769) + (c.b * 0.189);
-gl_FragColor.g = (c.r * 0.349) + (c.g * 0.686) + (c.b * 0.168);
-gl_FragColor.b = (c.r * 0.272) + (c.g * 0.534) + (c.b * 0.131);
-gl_FragColor.a = c.a;
-}
-	*/
-	@Multiline static String Sepia;
+	static final String Sepia = "\n" +
+			"#ifdef GL_ES\n" +
+			"precision lowp float;\n" +
+			"#define MED mediump\n" +
+			"#else\n" +
+			"#define MED\n" +
+			"#endif\n" +
+			"\n" +
+			"varying MED vec2 v_texCoords;\n" +
+			"uniform sampler2D u_texture0;\n" +
+			"\n" +
+			"void main()\n" +
+			"{\n" +
+			"vec4 c = texture2D(u_texture0, v_texCoords);\n" +
+			"gl_FragColor.r = (c.r * 0.393) + (c.g * 0.769) + (c.b * 0.189);\n" +
+			"gl_FragColor.g = (c.r * 0.349) + (c.g * 0.686) + (c.b * 0.168);\n" +
+			"gl_FragColor.b = (c.r * 0.272) + (c.g * 0.534) + (c.b * 0.131);\n" +
+			"gl_FragColor.a = c.a;\n" +
+			"}";
 	
 	public Sepia() {
 		super(CommonShaders.Screenspace, Sepia);

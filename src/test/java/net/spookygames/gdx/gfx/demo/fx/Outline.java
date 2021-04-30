@@ -23,8 +23,6 @@
  */
 package net.spookygames.gdx.gfx.demo.fx;
 
-import org.adrianwalker.multilinestring.Multiline;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -32,7 +30,6 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.utils.Disposable;
-
 import net.spookygames.gdx.gfx.BouncingBuffer;
 import net.spookygames.gdx.gfx.CommonShaders;
 import net.spookygames.gdx.gfx.VisualEffect;
@@ -112,51 +109,47 @@ public abstract class Outline implements VisualEffect, Disposable {
 
 	private static class OutlineFilter extends OwnedSinglePassShaderEffect {
 
-		/**
-// http://www.allpiper.com/2d-selection-outline-shader-in-libgdx/
-// http://blogs.love2d.org/content/let-it-glow-dynamically-adding-outlines-characters
-
-#ifdef GL_ES
-    #define PRECISION mediump
-    #define LOWP lowp
-    precision PRECISION float;
-#else
-    #define PRECISION
-    #define LOWP 
-#endif
-
-uniform sampler2D u_texture0;
-
-// The inverse of the viewport dimensions along X and Y
-uniform vec2 u_viewportInverse;
-
-// Color of the outline
-uniform vec4 u_color;
-
-// Thickness of the outline
-uniform float u_thickness;
-
-varying LOWP vec4 v_color;
-varying vec2 v_texCoords;
-
-void main() {
-   vec2 orig = v_texCoords.xy;
-   
-   float a = - 6.0 * texture2D(u_texture0, orig).a;
-   a += texture2D(u_texture0, orig + vec2(0, u_thickness) * u_viewportInverse).a;
-   a += 0.5 * texture2D(u_texture0, orig + vec2(-u_thickness, u_thickness) * u_viewportInverse).a;
-   a += texture2D(u_texture0, orig + vec2(-u_thickness, 0) * u_viewportInverse).a;
-   a += 0.5 * texture2D(u_texture0, orig + vec2(-u_thickness, -u_thickness) * u_viewportInverse).a;
-   a += texture2D(u_texture0, orig + vec2(0, -u_thickness) * u_viewportInverse).a;
-   a += 0.5 * texture2D(u_texture0, orig + vec2(u_thickness, -u_thickness) * u_viewportInverse).a;
-   a += texture2D(u_texture0, orig + vec2(u_thickness, 0) * u_viewportInverse).a;
-   a += 0.5 * texture2D(u_texture0, orig + vec2(u_thickness, u_thickness) * u_viewportInverse).a;
-   
-   gl_FragColor = vec4(u_color.r * a, u_color.g * a, u_color.b * a, a);
-}
-
-		*/
-		@Multiline static String Outline;
+		// http://www.allpiper.com/2d-selection-outline-shader-in-libgdx/
+		// http://blogs.love2d.org/content/let-it-glow-dynamically-adding-outlines-characters
+		static final String Outline = "\n" +
+				"#ifdef GL_ES\n" +
+				"    #define PRECISION mediump\n" +
+				"    #define LOWP lowp\n" +
+				"    precision PRECISION float;\n" +
+				"#else\n" +
+				"    #define PRECISION\n" +
+				"    #define LOWP \n" +
+				"#endif\n" +
+				"\n" +
+				"uniform sampler2D u_texture0;\n" +
+				"\n" +
+				"// The inverse of the viewport dimensions along X and Y\n" +
+				"uniform vec2 u_viewportInverse;\n" +
+				"\n" +
+				"// Color of the outline\n" +
+				"uniform vec4 u_color;\n" +
+				"\n" +
+				"// Thickness of the outline\n" +
+				"uniform float u_thickness;\n" +
+				"\n" +
+				"varying LOWP vec4 v_color;\n" +
+				"varying vec2 v_texCoords;\n" +
+				"\n" +
+				"void main() {\n" +
+				"   vec2 orig = v_texCoords.xy;\n" +
+				"   \n" +
+				"   float a = - 6.0 * texture2D(u_texture0, orig).a;\n" +
+				"   a += texture2D(u_texture0, orig + vec2(0, u_thickness) * u_viewportInverse).a;\n" +
+				"   a += 0.5 * texture2D(u_texture0, orig + vec2(-u_thickness, u_thickness) * u_viewportInverse).a;\n" +
+				"   a += texture2D(u_texture0, orig + vec2(-u_thickness, 0) * u_viewportInverse).a;\n" +
+				"   a += 0.5 * texture2D(u_texture0, orig + vec2(-u_thickness, -u_thickness) * u_viewportInverse).a;\n" +
+				"   a += texture2D(u_texture0, orig + vec2(0, -u_thickness) * u_viewportInverse).a;\n" +
+				"   a += 0.5 * texture2D(u_texture0, orig + vec2(u_thickness, -u_thickness) * u_viewportInverse).a;\n" +
+				"   a += texture2D(u_texture0, orig + vec2(u_thickness, 0) * u_viewportInverse).a;\n" +
+				"   a += 0.5 * texture2D(u_texture0, orig + vec2(u_thickness, u_thickness) * u_viewportInverse).a;\n" +
+				"   \n" +
+				"   gl_FragColor = vec4(u_color.r * a, u_color.g * a, u_color.b * a, a);\n" +
+				"}";
 	
 		private final Vector2ShaderParameter viewportInverse;
 		private final FloatShaderParameter thickness;
@@ -194,28 +187,26 @@ void main() {
 
 	private static class Superimpose extends OwnedSinglePassShaderEffect {
 
-		/**
-	#ifdef GL_ES
-		#define PRECISION mediump
-		precision PRECISION float;
-	#else
-		#define PRECISION
-	#endif
-
-	uniform PRECISION sampler2D u_texture0;
-	uniform PRECISION sampler2D u_texture1;
-
-	varying vec2 v_texCoords;
-
-	void main()
-	{
-		vec4 src1 = texture2D(u_texture0, v_texCoords);
-		vec4 src2 = texture2D(u_texture1, v_texCoords);
-
-		gl_FragColor = src1 * (1.0 - src2) + src2;
-	}
-		*/
-		@Multiline static String Superimpose;
+		static final String Superimpose = "\n" +
+				"\t#ifdef GL_ES\n" +
+				"\t\t#define PRECISION mediump\n" +
+				"\t\tprecision PRECISION float;\n" +
+				"\t#else\n" +
+				"\t\t#define PRECISION\n" +
+				"\t#endif\n" +
+				"\n" +
+				"\tuniform PRECISION sampler2D u_texture0;\n" +
+				"\tuniform PRECISION sampler2D u_texture1;\n" +
+				"\n" +
+				"\tvarying vec2 v_texCoords;\n" +
+				"\n" +
+				"\tvoid main()\n" +
+				"\t{\n" +
+				"\t\tvec4 src1 = texture2D(u_texture0, v_texCoords);\n" +
+				"\t\tvec4 src2 = texture2D(u_texture1, v_texCoords);\n" +
+				"\n" +
+				"\t\tgl_FragColor = src1 * (1.0 - src2) + src2;\n" +
+				"\t}";
 
 		private Texture inputTexture2 = null;
 

@@ -1,20 +1,23 @@
 plugins {
-  id "net.ltgt.apt" version "0.9"
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
 
 repositories {
     mavenCentral()
     jcenter()
 }
 
-group = 'net.spookygames.gdx'
+group = 'games.spooky.gdx'
 version = '0.0.4'
 
-ext.gdxVersion = '1.8.0'
+ext {
+    gdxVersion = '1.8.0'
+    libName = 'gdx-gfx'
+}
+
+archivesBaseName = "$libName"
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -22,61 +25,36 @@ targetCompatibility = 1.6
 
 dependencies {
     compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-    
-    // Annotations
-    apt 'org.adrianwalker:multiline-string:0.1.1'
 
     testCompile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
     testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    testCompileOnly 'org.adrianwalker:multiline-string:0.1.1'
 }
 
 // Demo
+ext.demoClass = "net.spookygames.gdx.gfx.demo.GdxGfxDemo"
+
+task demo(dependsOn: classes, type: JavaExec) {
+    main = demoClass
+    classpath = sourceSets.test.runtimeClasspath
+    standardInput = System.in
+    ignoreExitValue = true
+}
+
 task demoJar(type: Jar) {
 	baseName = "${project.name}-demo"
 	
-    from files(sourceSets.main.output.classesDir)
+    from files(sourceSets.main.output.classesDirs)
 	from sourceSets.test.output
     from {configurations.compile.collect {zipTree(it)}}
     from {configurations.testCompile.collect {zipTree(it)}}
 	
     manifest {
-        attributes 'Main-Class': "net.spookygames.gdx.gfx.demo.GdxGfxDemo"
+        attributes 'Main-Class': demoClass
     }
 }
 
-// Javadoc
-task javadocJar (type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-// Sources
-task sourcesJar (type : Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from components.java
-
-            artifact sourcesJar
-			artifact javadocJar
-        }
-    }
-}
-
-apply from: 'license.gradle'
+apply from: "$rootDir/gradle/license.gradle"
 license.includes(["**/*.java"])
 
-apply from: 'publish.gradle'
-bintray.publications = ['maven']
-bintrayUpload.dependsOn publishToMavenLocal
-
+apply from: "${rootDir}/gradle/publish-root.gradle"
+apply from: "${rootDir}/gradle/publish-module.gradle"
