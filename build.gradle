@@ -31,7 +31,7 @@ dependencies {
 }
 
 // Demo
-ext.demoClass = "net.spookygames.gdx.gfx.demo.GdxGfxDemo"
+ext.demoClass = "games.spooky.gdx.gfx.demo.GdxGfxDemo"
 
 task demo(dependsOn: classes, type: JavaExec) {
     main = demoClass

@@ -130,9 +130,9 @@ The `ShaderEffect` and `SinglePassShaderEffect` are not responsible for creating
 
 #### Examples
 
-[`Sepia`](src/test/java/net/spookygames/gdx/gfx/demo/fx/Sepia.java), a simple single-pass shader effect.
+[`Sepia`](src/test/java/games/spooky/gdx/gfx/demo/fx/Sepia.java), a simple single-pass shader effect.
 
-[`Outline`](src/test/java/net/spookygames/gdx/gfx/demo/fx/Outline.java), a non-trivial example of visual effect involving some compositing.
+[`Outline`](src/test/java/games/spooky/gdx/gfx/demo/fx/Outline.java), a non-trivial example of visual effect involving some compositing.
 
 ### Temporal effects
 
@@ -148,7 +148,7 @@ Implementation is rather up to you on this one!
 
 #### Example
 
-[`Screenshake`](src/test/java/net/spookygames/gdx/gfx/demo/fx/ScreenShake.java), some nice camera shaking.
+[`Screenshake`](src/test/java/games/spooky/gdx/gfx/demo/fx/ScreenShake.java), some nice camera shaking.
 
 ### Combining
 
@@ -156,7 +156,7 @@ It is possible to combine several effects into a single one with the help of som
 	
 `MultiVisualEffect` lets you combine several visual effects, one after the other. Every effect is applied on the result of the previous one. Automatically handles `Disposable` children when disposed itself. `MultiVisualEffect` being a `VisualEffect`, you can combine several layers of them on top of each other.
 
-Important note: You can also use `MultiVisualEffect` in a simple way! Call `capture()` just before you draw the content of your game screen and `endCapture()` just after and tadaa! you got yourself a nice Texture containing your screen waiting for all effects to be applied before rendering to backbuffer. See the [demo code](src/test/java/net/spookygames/gdx/gfx/demo/GdxGfxDemo.java#L249) for details.
+Important note: You can also use `MultiVisualEffect` in a simple way! Call `capture()` just before you draw the content of your game screen and `endCapture()` just after and tadaa! you got yourself a nice Texture containing your screen waiting for all effects to be applied before rendering to backbuffer. See the [demo code](src/test/java/games/spooky/gdx/gfx/demo/GdxGfxDemo.java#L249) for details.
 	
 `MultiTemporalEffect` lets you combine several temporal effects in parallel. Automatically removes finished effects. Is finished when all its children are finished. `MultiTemporalEffect` being a `TemporalEffect`, you can combine several layers of them on top of each other.
 	
